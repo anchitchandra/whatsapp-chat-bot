@@ -1,7 +1,6 @@
 
 from time import time
 from flask import Flask, request, jsonify
-from pymongo import collation
 from sqlalchemy.sql.expression import update
 from chat_functions import msg
 from db.connect import redis_client
