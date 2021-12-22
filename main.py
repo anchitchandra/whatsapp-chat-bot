@@ -25,6 +25,9 @@ cluster = MongoClient("mongodb+srv://anchitA:1234@cluster0.uqcp3.mongodb.net/myF
 db = cluster['bot']
 collections = db['bot']
 
+@app.route('/', methods=['GET'])
+def Home():
+    return "initial route", 200
 
 # hook function 
 @app.route('/bot', methods=['POST', 'GET'])
