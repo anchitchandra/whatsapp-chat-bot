@@ -1,49 +1,17 @@
-name: Heroku Deployment
+name: DeployToHeroku
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-  workflow_dispatch:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
-  deployToStage:     
+  build:
     runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 4
-      matrix:
-        python-version: [3.7]
-        
     steps:
-    - uses: actions/checkout@v2
-      with:
-          fetch-depth: 0
-
-    - name: Heroku login credentials
-      run: |
-        touch ~/.netrc
-        echo "machine api.heroku.com" > ~/.netrc
-        echo "  login $HEROKU_EMAIL" >> ~/.netrc
-        echo "  password $HEROKU_API_KEY" >> ~/.netrc
-        echo "machine git.heroku.com" >> ~/.netrc
-        echo "  login $HEROKU_EMAIL" >> ~/.netrc
-        echo "  password $HEROKU_API_KEY" >> ~/.netrc
-        cat ~/.netrc
-        
-      env:
-        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
-
-    - name: Add Heroku remote
-      run: |
-        heroku git:remote --app demo-chat-bot-akc
-    - name: Push to Heroku
-      run: |
-        git config --global user.email "anchitchandra111@gmail.com"
-        git config --global user.name "anchitchandra"
-        git add .
-        git commit -m "test"
-        git push heroku master -f
-        
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "demo-chat-bot-akc"
+          heroku_email: ${{secrets.HEROKU_EMAIL}}
