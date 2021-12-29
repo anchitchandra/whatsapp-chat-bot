@@ -41,6 +41,8 @@ jobs:
         heroku git:remote --app demo-chat-bot-akc
     - name: Push to Heroku
       run: |
+        git config --global user.email "anchitchandra111@gmail.com"
+        git config --global user.name "anchitchandra"
         git add .
         git commit -m "test"
         git push heroku master -f
